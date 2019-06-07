@@ -13,8 +13,8 @@ o<!DOCTYPE html>
 <body>
     <div class="topnav">
         <a class="active" href="#home">Movie Showtimes</a>
-        <input type="text" placeholder="Search Movies">
-        <input type="text" placeholder="Search Location">
+        <input type="text" id="search_movies_input" placeholder="Search Movies">
+        <input type="text" id="search_location_input" placeholder="Search Location">
         <div class="dropdown">
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Dropdown link
@@ -25,11 +25,19 @@ o<!DOCTYPE html>
               <a class="dropdown-item" href="#">PG</a>
               <a class="dropdown-item" href="#">PG-13</a>
             </div>
-          </div>
-  </div>
+        </div>
+        <button type="button" class="btn btn-light" id="submit_button">Submit</button>
+    </div>
+    
+    <br>
+    <div id="main_content">
+
+    </div>
   
             
               
     
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="javascript/script.js"></script>
 </html>
