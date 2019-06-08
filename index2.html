@@ -39,8 +39,7 @@
 
         .btn-dark {
             background-color: #6c757d !important;
-            border-color: #6c757d
-            color: #ffffff;
+            border-color: #6c757d color: #ffffff;
             width: 140px;
             margin-bottom: 4px;
         }
@@ -69,32 +68,26 @@
         </div>
     </div>
     <div class="container text-center">
-        <div class="btn-group mb-5">
-            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                Action
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-        </div>
+
         <form>
-                <div class="form-row">
-                  <div class="col-7">
+            <div class="form-row">
+                <div class="col-7">
                     <input type="text" class="form-control" placeholder="Movie">
-                  </div>
-                  <div class="col">
-                    <input type="text" class="form-control" placeholder="Zip">
-                  </div>
-                  <div class="col">
-                    <input type="text" class="form-control" placeholder="Rating">
-                  </div>
                 </div>
-              </form>
+                <div class="col">
+                    <input type="text" class="form-control" placeholder="Zip">
+                </div>
+                <div class="col">
+                        <select class="form-control" placeholder="Rating">
+                                <option>Select Rating</option>
+                                <option>Rating: G</option>
+                                <option>Rating: PG</option>
+                                <option>Rating: PG-13</option>
+                                <option>Rating: R</option>
+                            </select>
+                </div>
+            </div>
+        </form>
     </div>
 
     </div>
