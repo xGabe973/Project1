@@ -7,7 +7,6 @@ $( document ).ready(function() {
 
 
 // Pull current movies from database and display to HTML
-//
 
 // Grab values from "movie search text-box"
 var movieSearch = $("#search_movies_input").val().trim();
