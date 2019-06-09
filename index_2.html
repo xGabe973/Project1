@@ -56,6 +56,11 @@
             box-shadow: none;
             -webkit-box-shadow: none;
         }
+
+        #payment_form {
+            display: none;
+        }
+        
     </style>
 </head>
 
@@ -78,13 +83,16 @@
                     <input type="text" class="form-control" id="search_location_input" placeholder="Zip">
                 </div>
                 <div class="col">
-                        <select class="form-control" placeholder="Rating">
+                        <select name="rating" class="form-control" id="select_rating">
                                 <option>Select Rating</option>
-                                <option>Rating: G</option>
-                                <option>Rating: PG</option>
-                                <option>Rating: PG-13</option>
-                                <option>Rating: R</option>
-                            </select>
+                                <option value="G">Rating: G</option>
+                                <option value="PG">Rating: PG</option>
+                                <option value="PG-13">Rating: PG-13</option>
+                                <option value="R">Rating: R</option>
+                        </select>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-light" id="submit_button">Submit</button>
                 </div>
             </div>
         </form>
@@ -165,14 +173,17 @@
 
 
 
-        <i class="fa fa-cc-visa" style="font-size:36px"></i>
-        <i class="fa fa-cc-paypal" style="font-size:36px"></i>
-        <i class="fa fa-cc-amex" style="font-size:36px"></i>
-        <i class="fa fa-cc-discover" style="font-size:36px"></i>
+        
     </div>
 
 
-    <div class="container">
+    <div class="container" id="payment_form">
+        
+            <i class="fa fa-cc-visa" style="font-size:36px"></i>
+            <i class="fa fa-cc-paypal" style="font-size:36px"></i>
+            <i class="fa fa-cc-amex" style="font-size:36px"></i>
+            <i class="fa fa-cc-discover" style="font-size:36px"></i>
+
         <form class="mb-5 mt-3">
             <div class="form-row">
                 <div class="form-group col-md-5">
@@ -262,7 +273,7 @@
 
 
 
-                <a href="#" class="btn btn-primary">Submit</a>
+                <button type="button" class="btn btn-primary" id="seating_submit">Submit</button>
             </div>
             <div class="card-footer text-muted">
                 Lorem Ipsum Dolor
