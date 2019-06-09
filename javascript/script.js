@@ -3,23 +3,15 @@
 // =========================================================
 
 $( document ).ready(function() {
-    alert("Yo! Testing the JavaScript");
-
-
-    // Grab values from "movie search text-box"
-    var movieSearch = $("#search_movies_input");
-
-    // Grab values from "location text-box"
-    var movieLocation = $("#search_location_input");
-    
-    // Grab values from "ratings dropdown-box"
 
     // Movie submit button function
     $("#submit_button").on("click", function(){
-        var movieValue = movieSearch.val().trim();
-        var locationValue = movieLocation.val().trim();
-        console.log(movieValue);
-        console.log(locationValue);
+        var movieSearch = $("#search_movies_input").val().trim();
+        var movieLocation = $("#search_location_input").val().trim();
+        var movieRating = $("#select_rating :selected").val();
+        console.log(movieSearch);
+        console.log(movieLocation);
+        console.log(movieRating);
     });
 
     // Pull current movies from database

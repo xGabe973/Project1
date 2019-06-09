@@ -56,6 +56,11 @@
             box-shadow: none;
             -webkit-box-shadow: none;
         }
+
+        #payment_form {
+            display: none;
+        }
+        
     </style>
 </head>
 
@@ -78,13 +83,13 @@
                     <input type="text" class="form-control" id="search_location_input" placeholder="Zip">
                 </div>
                 <div class="col">
-                        <select class="form-control" placeholder="Rating">
+                        <select name="rating" class="form-control" id="select_rating">
                                 <option>Select Rating</option>
-                                <option>Rating: G</option>
-                                <option>Rating: PG</option>
-                                <option>Rating: PG-13</option>
-                                <option>Rating: R</option>
-                            </select>
+                                <option value="G">Rating: G</option>
+                                <option value="PG">Rating: PG</option>
+                                <option value="PG-13">Rating: PG-13</option>
+                                <option value="R">Rating: R</option>
+                        </select>
                 </div>
                 <div class="col">
                     <button type="button" class="btn btn-light" id="submit_button">Submit</button>
