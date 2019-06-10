@@ -15,17 +15,15 @@ $(document).ready(function() {
         console.log(movieLocation);
         console.log(movieRating);
 
-        getMovie(movieSearch);
+        // getMovie(movieSearch);
+        getLocation(movieLocation);
     });
     
     // Function to pull movie from database
-    function getMovie(movieSearch) {
+    function getLocation(movieLocation) {
         jQuery.ajax({
-            url: "https://api.internationalshowtimes.com/v4/movies/",
+            url: "https://api.internationalshowtimes.com/v4/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
             type: "GET",
-            data: {
-                "countries": "US",
-            },
             headers: {
                 "X-API-Key": "KBvReF0P6MlqDF9zeORmnpIrGRictjlU",
             },
@@ -33,7 +31,29 @@ $(document).ready(function() {
         .done(function(data, textStatus, jqXHR) {
             console.log("HTTP Request Succeeded: " + jqXHR.status);
             console.log(data);
-
+            let cinema = data.cinemas;
+            let output = "";
+            $.each(cinema, function(index, val){
+                console.log(val.name);
+                output += `
+                <div class="card mb-5 mt-5">
+                    <div class="card-header">
+                        ` + val.name + `
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Select a movie time to buy Standard Showtimes</h5>
+                        <p class="card-text">Select a movie time to buy Standard Showtimes</p>
+                        <a href="#" class="btn btn-primary">11:00AM</a>
+                        <a href="#" class="btn btn-primary">11:00AM</a>
+                        <a href="#" class="btn btn-primary">11:00AM</a>
+                        <a href="#" class="btn btn-primary">11:00AM</a>
+                        <a href="#" class="btn btn-primary">11:00AM</a>
+                    </div>
+                </div>
+                `
+                $("#cinema-display").empty();
+                $("#cinema-display").prepend(output);
+            })
             /*
             $.each(data.movies, function(i, val) {
                 var movieTitle = val.title;
@@ -65,7 +85,7 @@ $(document).ready(function() {
 // user can select a seat by clicking on one that is available
 
 // Toggle purchase form
-    $("#seating_submit").on("click", function() {
+    $("#seating-submit").on("click", function() {
         var paymentForm = $("#payment_form");
         if (paymentForm.style.display === "none") {
             paymentForm.style.display = "block";
