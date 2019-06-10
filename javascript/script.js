@@ -4,6 +4,24 @@
 
 $(document).ready(function() {
 
+    // MOVIE DATABASE:
+    let apiURL = "https://api.internationalshowtimes.com/v4"
+    $.ajax({
+        url: apiURL + "/movies/",
+        type: "GET",
+        data: {
+            "countries": "US",
+        },
+        headers: {
+            "X-API-Key": "KBvReF0P6MlqDF9zeORmnpIrGRictjlU",
+        },
+    })
+    .done(function(data, textStatus, jqXHR) {
+        console.log("HTTP Request Succeeded: " + jqXHR.status);
+        console.log(data.movies);
+    });
+
+
     // Movie submit button function
     $("#submit_button").on("click", function(event){
         event.preventDefault();
@@ -16,14 +34,18 @@ $(document).ready(function() {
         console.log(movieRating);
 
         // getMovie(movieSearch);
-        getLocation(movieLocation);
+        getCinema(movieLocation);
     });
     
-    // Function to pull movie from database
-    function getLocation(movieLocation) {
-        jQuery.ajax({
-            url: "https://api.internationalshowtimes.com/v4/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
+
+    // Function to pull cinema data from database
+    function getCinema(movieLocation) {
+        
+        // GET cinema name
+        $.ajax({
+            url: apiURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
             type: "GET",
+            async: false,
             headers: {
                 "X-API-Key": "KBvReF0P6MlqDF9zeORmnpIrGRictjlU",
             },
@@ -35,50 +57,49 @@ $(document).ready(function() {
             let output = "";
             $.each(cinema, function(index, val){
                 console.log(val.name);
+                console.log(val.id);
                 output += `
                 <div class="card mb-5 mt-5">
                     <div class="card-header">
                         ` + val.name + `
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="movie-times">
                         <h5 class="card-title">Select a movie time to buy Standard Showtimes</h5>
                         <p class="card-text">Select a movie time to buy Standard Showtimes</p>
-                        <a href="#" class="btn btn-primary">11:00AM</a>
-                        <a href="#" class="btn btn-primary">11:00AM</a>
-                        <a href="#" class="btn btn-primary">11:00AM</a>
-                        <a href="#" class="btn btn-primary">11:00AM</a>
-                        <a href="#" class="btn btn-primary">11:00AM</a>
                     </div>
                 </div>
                 `
                 $("#cinema-display").empty();
                 $("#cinema-display").prepend(output);
-            })
-            /*
-            $.each(data.movies, function(i, val) {
-                var movieTitle = val.title;
-                console.log(movieTitle);
-                
-                if (movieSearch = movieTitle) {
-                    $("#movie_title").text(movieTitle);
-                } else { 
-                    $("#movie_title").text("Movie not found");
-                } 
-                
-                var movieIMG = val.poster_image_thumbnail;
-                console.log(movieIMG);
-            })
-            */
-        
+            }) 
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log("HTTP Request Failed");
         })
-        .always(function() {
-            /* ... */
+
+        // GET cinema showtime
+        $.ajax({
+            url: apiURL + "/showtimes?cinema_id=46940&movie_id=45846",
+            type: "GET",
+            async: false,
+            headers: {
+                "X-API-Key": "KBvReF0P6MlqDF9zeORmnpIrGRictjlU",
+            },
+        })
+        .done(function(data, textStatus, jqXHR) {
+            console.log("HTTP Request Succeeded: " + jqXHR.status);
+            console.log(data.showtimes);
+            let showtimes = data.showtimes;
+            let output = "";
+            $.each(showtimes, function(index, val){
+                console.log(val.start_at);
+                output += `
+                    <a href="#" class="btn btn-primary">` + val.start_at + `</a>
+                `
+                $("#movie-times").append(output);
+            })
         });
     };
-    
 
 
 // Display seating chart with available seating
