@@ -39,3 +39,37 @@
   });
   console.log(data)
 };
+
+var firebaseConfig = {
+    apiKey: "AIzaSyCek-1-W6uDo5ZDEZhKMHsPTKoYzna7RLI",
+    authDomain: "movie-app-project-77d4b.firebaseapp.com",
+    databaseURL: "https://movie-app-project-77d4b.firebaseio.com",
+    projectId: "movie-app-project-77d4b",
+    storageBucket: "",
+    messagingSenderId: "561592848479",
+    appId: "1:561592848479:web:f9a394663f009ed7"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  var database = firebase.database();
+  $("#button").on("click", function(event) {
+    event.preventDefault();
+  
+    // Grabs user input
+    var Name = $("#employee-name-input").val().trim();
+    var  = $("#role-input").val().trim();
+    var  = moment($("#start-input").val().trim(), "MM/DD/YYYY").format("X");
+    var empRate = $("#rate-input").val().trim();
+  
+    // Creates local "temporary" object for holding employee data
+    var newEmp = {
+      name: empName,
+      role: empRole,
+      start: empStart,
+      rate: empRate
+    };
+  
+    // Uploads employee data to the database
+    database.ref().push(newEmp);
+  
