@@ -4,10 +4,11 @@
 
 $(document).ready(function() {
 
-    // MOVIE DATABASE:
-    let apiURL = "https://api.internationalshowtimes.com/v4"
+    // SHOWTIMES MOVIE DATABASE:
+    let showtimesURL = "https://api.internationalshowtimes.com/v4"
+
     $.ajax({
-        url: apiURL + "/movies/",
+        url: showtimesURL + "/movies/",
         type: "GET",
         data: {
             "countries": "US",
@@ -35,26 +36,26 @@ $(document).ready(function() {
         console.log(movieRating);
 
         getMovie(movieSearch);
-        getCinema(movieLocation);
+        getShowtimes(movieLocation);
     });
     
 
 
-    // Function to pull movie data from database
+    // Function to pull movie data from OMDB API
     function getMovie(movieSearch) {
-        var queryURL = "https://www.omdbapi.com/?t=" + movieSearch + "&apikey=trilogy";
+        let movieURL = "https://www.omdbapi.com/?t=" + movieSearch + "&apikey=trilogy";
         
         $.ajax({
-            url: queryURL,
+            url: movieURL,
             method: "GET"
           }).then(function(response) {
             console.log(response);
 
-            var movieTitle = response.Title;
-            var moviePlot = response.Plot;
-            var movieIMG = response.Poster;
-            var movieRuntime = response.Runtime;
-            var movieRated = response.Rated;
+            let movieTitle = response.Title;
+            let moviePlot = response.Plot;
+            let movieIMG = response.Poster;
+            let movieRuntime = response.Runtime;
+            let movieRated = response.Rated;
 
             $("#movie-poster").empty().html(`<img src=` + movieIMG + `alt="movie_poster" class="img-thumbnail mb-4">`);
             $("#movie-title").empty().text(movieTitle);
@@ -67,12 +68,12 @@ $(document).ready(function() {
 
 
 
-    // Function to pull cinema data from database
-    function getCinema(movieLocation) {
+    // Function to pull cinema data from INTERNATIONAL SHOWTIMES API
+    function getShowtimes(movieLocation) {
         
         // GET cinema name
         $.ajax({
-            url: apiURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
+            url: showtimesURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
             type: "GET",
             async: false,
             headers: {
@@ -108,7 +109,7 @@ $(document).ready(function() {
 
         // GET cinema showtime
         $.ajax({
-            url: apiURL + "/showtimes?cinema_id=46940&movie_id=45846",
+            url: showtimesURL + "/showtimes?cinema_id=46940&movie_id=46097",
             type: "GET",
             async: false,
             headers: {
