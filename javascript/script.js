@@ -22,6 +22,7 @@ $(document).ready(function() {
     });
 
 
+
     // Movie submit button function
     $("#submit_button").on("click", function(event){
         event.preventDefault();
@@ -33,10 +34,38 @@ $(document).ready(function() {
         console.log(movieLocation);
         console.log(movieRating);
 
-        // getMovie(movieSearch);
+        getMovie(movieSearch);
         getCinema(movieLocation);
     });
     
+
+
+    // Function to pull movie data from database
+    function getMovie(movieSearch) {
+        var queryURL = "https://www.omdbapi.com/?t=" + movieSearch + "&apikey=trilogy";
+        
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).then(function(response) {
+            console.log(response);
+
+            var movieTitle = response.Title;
+            var moviePlot = response.Plot;
+            var movieIMG = response.Poster;
+            var movieRuntime = response.Runtime;
+            var movieRated = response.Rated;
+
+            $("#movie-poster").empty().html(`<img src=` + movieIMG + `alt="movie_poster" class="img-thumbnail mb-4">`);
+            $("#movie-title").empty().text(movieTitle);
+            $("#movie-plot").empty().text(moviePlot);
+            $("#movie-rated").empty().html(`
+                <strong>Rating: ` + movieRated + `</strong><br>Runtime: ` + movieRuntime + `
+            `)
+          });
+    };
+
+
 
     // Function to pull cinema data from database
     function getCinema(movieLocation) {
