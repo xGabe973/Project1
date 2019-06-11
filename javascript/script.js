@@ -36,7 +36,7 @@ $(document).ready(function() {
         console.log(movieRating);
 
         getMovie(movieSearch);
-        getShowtimes(movieLocation);
+        getCinema(movieLocation);
     });
     
 
@@ -67,11 +67,11 @@ $(document).ready(function() {
     };
 
 
-
+    let cinemaId = [];
     // Function to pull cinema data from INTERNATIONAL SHOWTIMES API
-    function getShowtimes(movieLocation) {
+    function getCinema(movieLocation) {
         
-        // GET cinema name
+        // GET cinema name and id
         $.ajax({
             url: showtimesURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
             type: "GET",
@@ -88,6 +88,7 @@ $(document).ready(function() {
             $.each(cinema, function(index, val){
                 console.log(val.name);
                 console.log(val.id);
+                cinemaId.push(val.id);
                 output += `
                 <div class="card mb-5 mt-5">
                     <div class="card-header">
@@ -101,15 +102,20 @@ $(document).ready(function() {
                 `
                 $("#cinema-display").empty();
                 $("#cinema-display").prepend(output);
+                getShowtimes(cinemaId);
             }) 
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log("HTTP Request Failed");
         })
+    };
 
+
+    // Function to pull cinema showtimes from INTERNATIONAL SHOWTIMES API
+    function getShowtimes(cinemaId) {
         // GET cinema showtime
         $.ajax({
-            url: showtimesURL + "/showtimes?cinema_id=46940&movie_id=46097",
+            url: showtimesURL + "/showtimes?cinema_id=" + cinemaId + "&movie_id=46097",
             type: "GET",
             async: false,
             headers: {
