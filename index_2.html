@@ -57,10 +57,10 @@
             -webkit-box-shadow: none;
         }
 
-        #payment_form {
+        #payment-form {
             display: none;
         }
-        
+
     </style>
 </head>
 
@@ -101,13 +101,13 @@
     </div>
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3" id="movie-poster">
                 <img src="images/movie_poster_blue.png" alt="movie_poster" class="img-thumbnail mb-4">
 
             </div>
             <div class="col-md-9">
-                <h2>Movie Title</h2>
-                Movie Synopsis Here. Sit voluptatem accusantium doloremque laudantium, totam
+                <h2 id="movie-title">Movie Title</h2>
+                <p id="movie-plot">Movie Synopsis Here. Sit voluptatem accusantium doloremque laudantium, totam
                 rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
                 explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
                 consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
@@ -116,7 +116,8 @@
                 exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
                 vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum
                 qui dolorem eum fugiat quo voluptas nulla pariatur?
-                <p class="mt-3">
+                </p>
+                <p class="mt-3" id="movie-rated">
                     <strong>Rating: PG</strong><br>
                     Runtime: 120 minutes
                 </p>
@@ -124,7 +125,7 @@
             </div>
         </div>
     </div>
-    <div class="container text-center">
+    <div class="container text-center" id="cinema-display">
         <div class="card mb-5 mt-5">
             <div class="card-header">
                 CENTURY SAN FERNANDO VALLEY 12 AMD
@@ -177,7 +178,7 @@
     </div>
 
 
-    <div class="container" id="payment_form">
+    <div class="container" id="payment-form">
         
             <i class="fa fa-cc-visa" style="font-size:36px"></i>
             <i class="fa fa-cc-paypal" style="font-size:36px"></i>
@@ -226,10 +227,10 @@
                     </label>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" id="payment-submit">Submit</button>
         </form>
     </div>
-    <div class="container text-center mb-5">
+    <div class="container text-center mb-5" id="seating-form">
 
         <div class="card text-center">
             <div class="card-header">
@@ -273,7 +274,7 @@
 
 
 
-                <button type="button" class="btn btn-primary" id="seating_submit">Submit</button>
+                <button type="button" class="btn btn-primary" id="seating-submit">Submit</button>
             </div>
             <div class="card-footer text-muted">
                 Lorem Ipsum Dolor
