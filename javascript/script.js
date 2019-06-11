@@ -95,7 +95,7 @@ $(document).ready(function() {
                         ` + val.name + `
                     </div>
                     <div class="card-body" id="movie-times">
-                        <h5 class="card-title">Select a movie time to buy Standard Showtimes</h5>
+                        <h5 class="card-title">` + val.location.address.display_text + `</h5>
                         <p class="card-text">Select a movie time to buy Standard Showtimes</p>
                     </div>
                 </div>
