@@ -143,13 +143,14 @@ $(document).ready(function() {
 
 // Toggle purchase form
     $("#seating-submit").on("click", function() {
-        var paymentForm = $("#payment_form");
-        if (paymentForm.style.display === "none") {
-            paymentForm.style.display = "block";
-        } else {
-            paymentForm.style.display = "none";
-        }
+        $("#payment-form").show();
+        $("#seating-form").hide();
     });
+
+    $("#payment-submit").on("click", function() {
+        $("#payment-form").empty().html("<h3><center>Thank you for your payment!</center></h3>");
+
+    })
 
 // On submit button press, display thank you screen
 
