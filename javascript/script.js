@@ -5,23 +5,44 @@
 $(document).ready(function() {
 
     // SHOWTIMES MOVIE DATABASE:
-    let showtimesURL = "https://api.internationalshowtimes.com/v4"
-
-    $.ajax({
-        url: showtimesURL + "/movies/",
-        type: "GET",
-        data: {
-            "countries": "US",
-        },
-        headers: {
-            "X-API-Key": "KBvReF0P6MlqDF9zeORmnpIrGRictjlU",
-        },
-    })
-    .done(function(data, textStatus, jqXHR) {
-        console.log("HTTP Request Succeeded: " + jqXHR.status);
-        console.log(data.movies);
-    });
-
+    var showtimesURL = "https://api.internationalshowtimes.com/v4";
+    var settings = {
+        "url": "https://api.internationalshowtimes.com/v4/movies",
+        "method": "GET",
+        "headers": {
+          "X-API-Key": "KBvReF0P6MlqDF9zeORmnpIrGRictjlU"
+        }
+      }
+      
+      // you read the users input
+      // save it to some variable
+      
+      var allMovies;
+      
+      
+      // do this on page load
+      $.ajax(settings).done(function (response) {
+          allMovies = response.movies;
+      });
+      
+      
+      // set some sort of keypress event listener
+      $("#search_movies_input").on('keyup', function() {
+          var value = $(this).val();
+          var movies = filterMovies(value);
+          console.log(movies);
+          
+      })
+      
+      
+      function filterMovies(movieTitle) {
+          var movies = allMovies.filter(function(movie) {
+              var title = movie.title || "";
+              return title.toLowerCase().startsWith(movieTitle);
+          });
+      
+          return movies;
+      }
 
 
     // Movie submit button function
@@ -67,13 +88,13 @@ $(document).ready(function() {
     };
 
 
-    let cinemaId = [];
     // Function to pull cinema data from INTERNATIONAL SHOWTIMES API
+    let cinemaId = [];
     function getCinema(movieLocation) {
         
         // GET cinema name and id
         $.ajax({
-            url: showtimesURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
+            url: showtimesURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode&distance=100",
             type: "GET",
             async: false,
             headers: {
@@ -100,8 +121,8 @@ $(document).ready(function() {
                     </div>
                 </div>
                 `
-                $("#cinema-display").empty();
-                $("#cinema-display").prepend(output);
+
+                $("#cinema-display").empty().prepend(output);
                 getShowtimes(cinemaId);
             }) 
         })
@@ -113,9 +134,17 @@ $(document).ready(function() {
 
     // Function to pull cinema showtimes from INTERNATIONAL SHOWTIMES API
     function getShowtimes(cinemaId) {
+        console.log(cinemaId);
         // GET cinema showtime
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        var end = new Date();
+        // end.setDate(today.getDate() + 1);
+        end.setHours(23,59,59,999);
+        console.log("beginning of day", today);
+        console.log("EOD", end);
         $.ajax({
-            url: showtimesURL + "/showtimes?cinema_id=" + cinemaId + "&movie_id=46097",
+            url: showtimesURL + "/showtimes?cinema_id=" + cinemaId + "&movie_id=46097" + "&time_from=" + today.toISOString() + "&time_to=" + end.toISOString(),
             type: "GET",
             async: false,
             headers: {
@@ -141,17 +170,16 @@ $(document).ready(function() {
 // Display seating chart with available seating
 // user can select a seat by clicking on one that is available
 
-// Toggle purchase form
+    // Toggle purchase form
     $("#seating-submit").on("click", function() {
         $("#payment-form").show();
         $("#seating-form").hide();
     });
 
+    // On submit button press, display thank you screen
     $("#payment-submit").on("click", function() {
         $("#payment-form").empty().html("<h3><center>Thank you for your payment!</center></h3>");
+    });
 
-    })
-
-// On submit button press, display thank you screen
 
 });
