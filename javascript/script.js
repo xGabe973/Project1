@@ -4,6 +4,56 @@
 
 $(document).ready(function() {
 
+    // BANNER
+    var bannerStatus = 1;
+    var bannerTimer = 6000;
+
+    function bannerLoop() {
+        if (bannerStatus === 1) {
+            $("#imgban2").css("opacity", "0");
+            setTimeout(function() {
+                $("#imgban1").css({"right": "0px", "zindex": "1000"});
+                $("#imgban2").css({"right": "-2400px", "zindex": "1500"});
+                $("#imgban3").css({"right": "2400px", "zindex": "500"});   
+            }, 500);
+            setTimeout(function() {
+            $("#imgban2").css("opacity", "1");
+            }, 1000);
+            bannerStatus = 2;
+        }
+        else if (bannerStatus === 2) {
+            $("#imgban3").css("opacity", "0");
+            setTimeout(function() {
+                $("#imgban2").css({"right": "0px", "zindex": "1000"});
+                $("#imgban3").css({"right": "-2400px", "zindex": "1500"});
+                $("#imgban1").css({"right": "2400px", "zindex": "500"});   
+            }, 500);
+            setTimeout(function() {
+            $("#imgban3").css("opacity", "1");
+            }, 1000);
+            bannerStatus = 3;
+        }
+        else if (bannerStatus === 3) {
+            $("#imgban1").css("opacity", "0");
+            setTimeout(function() {
+                $("#imgban3").css({"right": "0px", "zindex": "1000"});
+                $("#imgban1").css({"right": "-2400px", "zindex": "1500"});
+                $("#imgban2").css({"right": "2400px", "zindex": "500"});   
+            }, 500);
+            setTimeout(function() {
+            $("#imgban1").css("opacity", "1");
+            }, 1000);
+            bannerStatus = 1;
+        }
+    }
+
+    bannerLoop();
+
+    var startBannerLoop = setInterval(function() {
+        bannerLoop();
+    }, bannerTimer);
+
+
     // SHOWTIMES MOVIE DATABASE:
     var showtimesURL = "https://api.internationalshowtimes.com/v4";
     var settings = {
@@ -76,14 +126,23 @@ $(document).ready(function() {
         console.log(movieLocation);
         console.log(movieRating);
 
-      //  getMovie(movieSearch);
+        getMovie(movieSearch);
         getCinema(movieLocation);
     });
     
+    /*
+    function getMovie2() {
+        $.ajax({
+            url: "https://data.tmsapi.com/v1.1/movies/showings?startDate=2019-06-13&zip=28078&api_key=5s58ed6xnp59p2n5e4arr26c",
+            method: "GET"
+          }).then(function(response) {
+            console.log(response); 
+          });
+    };
+    */
 
 
     // Function to pull movie data from OMDB API
-    /*
     function getMovie(movieSearch) {
         let movieURL = "https://www.omdbapi.com/?t=" + movieSearch + "&apikey=trilogy";
         
@@ -107,7 +166,6 @@ $(document).ready(function() {
             `)
           });
     };
-    */
 
 
     // Function to pull cinema data from INTERNATIONAL SHOWTIMES API
