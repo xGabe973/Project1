@@ -102,7 +102,7 @@ $(document).ready(function() {
           }
           evaluateArray();
           
-      })
+      });
       
       
       function filterMovies(movieTitle) {
@@ -158,11 +158,11 @@ $(document).ready(function() {
             let movieRuntime = response.Runtime;
             let movieRated = response.Rated;
 
-            $("#movie-poster").empty().html(`<img src=` + movieIMG + `alt="movie_poster" class="img-thumbnail mb-4">`);
+            $("#movie-poster").empty().html(`<img src=${movieIMG}alt="movie_poster" class="img-thumbnail mb-4">`);
             $("#movie-title").empty().text(movieTitle);
             $("#movie-plot").empty().text(moviePlot);
             $("#movie-rated").empty().html(`
-                <strong>Rating: ` + movieRated + `</strong><br>Runtime: ` + movieRuntime + `
+                <strong>Rating: ${movieRated}</strong><br>Runtime: ${movieRuntime}
             `)
           });
     };
@@ -250,6 +250,11 @@ $(document).ready(function() {
 
 // Display seating chart with available seating
 // user can select a seat by clicking on one that is available
+
+    $('.btn-secondary1').click(function() {
+        $('.btn-secondary1').not(this).removeClass('buttonactive');
+        $(this).toggleClass('btn-thirdly');
+    });
 
     // Toggle purchase form
     $("#seating-submit").on("click", function() {
