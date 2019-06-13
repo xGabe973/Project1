@@ -267,7 +267,7 @@ $(document).ready(function() {
         $("#payment-form").empty().html(
             `<h3><center>Thank you for your payment!</center></h3>
             <br>
-            <center><img src='images/movie-ticket.jpg' height='200px' width='250px'></center>`
+            <center><img src='assets/images/movie-ticket.jpg' height='200px' width='250px'></center>`
             );
     });
 
