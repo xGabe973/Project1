@@ -37,6 +37,9 @@ $(document).ready(function() {
 
         getMovie(movieSearch);
         getCinema(movieLocation);
+        $("#search_movies_input").val("");
+        $("#search_location_input").val("");
+        $("#search_location_input").val("");
     });
     
 
@@ -73,7 +76,7 @@ $(document).ready(function() {
         
         // GET cinema name and id
         $.ajax({
-            url: showtimesURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode",
+            url: showtimesURL + "/cinemas?search_query=" + movieLocation + "&search_field=zipcode&limit=5",
             type: "GET",
             async: false,
             headers: {
@@ -139,6 +142,10 @@ $(document).ready(function() {
 
 
 // Display seating chart with available seating
+$('.btn-secondary1').click(function() {  
+    $('.btn-secondary1').not(this).removeClass('buttonactive'); // remove buttonactive from the others
+    $(this).toggleClass('btn-thirdly'); // toggle current clicked element
+});
 // user can select a seat by clicking on one that is available
 
 // Toggle purchase form
