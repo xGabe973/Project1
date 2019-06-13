@@ -14,23 +14,43 @@ $(document).ready(function() {
         }
       }
       
-      // you read the users input
-      // save it to some variable
-      
+
       var allMovies;
-      
-      
-      // do this on page load
+      var availableTags = [];
+
+      // Load all movies on page load
       $.ajax(settings).done(function (response) {
           allMovies = response.movies;
+          console.log(allMovies);
+          // Allow text input
+          $("#fieldset").attr("disabled", false);
+      });
+
+
+      // Autocomplete widget
+      $(function() {
+        $("#search_movies_input").autocomplete({
+          source: availableTags,
+          delay: 500
+        });
       });
       
       
-      // set some sort of keypress event listener
+      // Keypress event listener to 
       $("#search_movies_input").on('keyup', function() {
           var value = $(this).val();
           var movies = filterMovies(value);
           console.log(movies);
+
+          // function to evaluate titles in array to keep from repeating
+          function evaluateArray() {
+            if (availableTags.includes(movies[0].title)) {
+               return false; 
+            } else {
+                availableTags.push(movies[0].title);
+            }
+          }
+          evaluateArray();
           
       })
       
@@ -56,13 +76,14 @@ $(document).ready(function() {
         console.log(movieLocation);
         console.log(movieRating);
 
-        getMovie(movieSearch);
+      //  getMovie(movieSearch);
         getCinema(movieLocation);
     });
     
 
 
     // Function to pull movie data from OMDB API
+    /*
     function getMovie(movieSearch) {
         let movieURL = "https://www.omdbapi.com/?t=" + movieSearch + "&apikey=trilogy";
         
@@ -86,6 +107,7 @@ $(document).ready(function() {
             `)
           });
     };
+    */
 
 
     // Function to pull cinema data from INTERNATIONAL SHOWTIMES API
@@ -113,10 +135,10 @@ $(document).ready(function() {
                 output += `
                 <div class="card mb-5 mt-5">
                     <div class="card-header">
-                        ` + val.name + `
+                        ${val.name}
                     </div>
                     <div class="card-body" id="movie-times">
-                        <h5 class="card-title">` + val.location.address.display_text + `</h5>
+                        <h5 class="card-title">${val.location.address.display_text}</h5>
                         <p class="card-text">Select a movie time to buy Standard Showtimes</p>
                     </div>
                 </div>
@@ -155,13 +177,14 @@ $(document).ready(function() {
             console.log("HTTP Request Succeeded: " + jqXHR.status);
             console.log(data.showtimes);
             let showtimes = data.showtimes;
-            let output = "";
             $.each(showtimes, function(index, val){
                 console.log(val.start_at);
-                output += `
-                    <a href="#" class="btn btn-primary">` + val.start_at + `</a>
-                `
-                $("#movie-times").append(output);
+                let startTime = val.start_at;
+                let convertedTime = moment(startTime);
+                console.log(convertedTime.format("h:mm a"));
+                $("#movie-times").append(`
+                    <a href="#" class="btn btn-primary">${convertedTime.format("h:mm a")}</a>
+                `);
             })
         });
     };
@@ -176,9 +199,13 @@ $(document).ready(function() {
         $("#seating-form").hide();
     });
 
-    // On submit button press, display thank you screen
+    // On submit button press, display thank you message
     $("#payment-submit").on("click", function() {
-        $("#payment-form").empty().html("<h3><center>Thank you for your payment!</center></h3>");
+        $("#payment-form").empty().html(
+            `<h3><center>Thank you for your payment!</center></h3>
+            <br>
+            <center><img src='images/movie-ticket.jpg' height='200px' width='250px'></center>`
+            );
     });
 
 
