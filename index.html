@@ -1,45 +1,353 @@
-o<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!--links to bootstrap and css-->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="assets/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <title>Project1</title>
-</head>
-<body>
 
-    <div class="topnav">
-        <a class="active" href="#home">Movie Showtimes</a>
-        <input type="text" id="search_movies_input" placeholder="Search Movies">
-        <input type="text" id="search_location_input" placeholder="Search Location">
-        <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown link
-            </a>
-          
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="#">G</a>
-              <a class="dropdown-item" href="#">PG</a>
-              <a class="dropdown-item" href="#">PG-13</a>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8">
+    <title>Movie Times</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-database.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+
+    <style type="text/css">
+        .jumbotron {
+            background-color: #000000 !important;
+            color: #ffffff;
+        }
+
+        body {
+            font-family: 'Muli', sans-serif;
+        }
+
+        .card-header {
+            background-color: #6c757d !important;
+            color: #ffffff;
+            font-family: 'Muli', sans-serif;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            color: #ffffff;
+            width: 100px;
+            margin-bottom: 4px;
+        }
+
+        .btn-dark {
+            background-color: #6c757d !important;
+            border-color: #6c757d color: #ffffff;
+            width: 140px;
+            margin-bottom: 4px;
+        }
+
+        .btn-secondary1 {
+           color: #ffffff;
+           width: 36px;
+           height: 36px;
+           margin-bottom: 4px;
+       }
+
+       .btn-thirdly {
+           background-color: red;
+           width: 36px;
+           height: 36px;
+           margin-bottom: 4px;
+       }
+
+        .form-control:focus {
+            border-color: #b1b1b1;
+            box-shadow: none;
+            -webkit-box-shadow: none;
+        }
+
+        #payment-form {
+            display: none;
+        }
+
+        .main-banner {
+            margin: 0 auto;
+            width: 100%;
+            height: 400px;
+            background-color: #fff;
+            overflow: hidden;
+            position: relative;
+            margin-top: 0;
+            margin-bottom: 40px;
+        }
+
+        .main-banner .imgban {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0px;
+            transition: all ease-in-out 500ms;
+            -webkit-transition: all ease-in-out 500ms;
+            -moz-transition: all ease-in-out 500ms;
+            -o-transition: all ease-in-out 500ms;
+        }
+
+        .main-banner #imgban3 {
+            background-image: url(images/movies/aladdin.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .main-banner #imgban2 {
+            background-image: url(images/movies/jw3.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .main-banner #imgban1 {
+            background-image: url(images/movies/slop2.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+    <div class="jumbotron jumbotron-fluid">
+            <div class="main-banner" id="main-banner">
+                    <div class="imgban" id="imgban3">
+            
+                    </div>
+                    <div class="imgban" id="imgban2">
+                        
+                    </div>
+                    <div class="imgban" id="imgban1">
+                        
+                    </div>
+            </div>
+        <div class="container text-center">
+                <h1 class="display-4"><img src="https://flaticons.net/gd/makefg.php?i=icons/Miscellaneous/Film-Reel.png&r=255&g=255&b=255" style="width:50px;height:50px;">&nbsp;Movie Times&nbsp;<img src="https://flaticons.net/gd/makefg.php?i=icons/Miscellaneous/Film-Reel.png&r=255&g=255&b=255" style="width:50px;height:50px;"></h1>
+            <p class="lead mr-5 ml-5">Read reviews and purchase tickets.
+            </p>
+        </div>
+    </div>
+
+    <div class="container text-center">
+
+        <form>
+          <fieldset disabled="disabled" id="fieldset">
+            <div class="form-row">
+                <div class="col-7">
+                    <input type="text" class="form-control" id="search_movies_input" placeholder="Movie">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" id="search_location_input" placeholder="Zip">
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-light" id="submit_button">Submit</button>
+                </div>
+            </div>
+          </fieldset>
+        </form>
+    </div>
+
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3" id="movie-poster">
+                <img src="images/movie_poster_blue.png" alt="movie_poster" class="img-thumbnail mb-4">
+
+            </div>
+            <div class="col-md-9">
+                <h2 id="movie-title">Movie Title</h2>
+                <p id="movie-plot">Movie Synopsis Here. Sit voluptatem accusantium doloremque laudantium, totam
+                rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+                explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
+                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
+                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora
+                incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum
+                exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
+                vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum
+                qui dolorem eum fugiat quo voluptas nulla pariatur?
+                </p>
+                <p class="mt-3" id="movie-rated">
+                    <strong>Rating: PG</strong><br>
+                    Runtime: 120 minutes
+                </p>
+
             </div>
         </div>
-        <button type="button" class="btn btn-light" id="submit_button">Submit</button>
     </div>
-    
-    <br>
-    <div id="main_content">
+    <div class="container text-center" id="cinema-display">
+        <div class="card mb-5 mt-5">
+            <div class="card-header">
+                CENTURY SAN FERNANDO VALLEY 12 AMD
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Select a movie time to buy Standard Showtimes</h5>
+                <p class="card-text">Select a movie time to buy Standard Showtimes</p>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+            </div>
+        </div>
+
+        <div class="card mb-5 mt-5">
+            <div class="card-header">
+                CENTURY 20 DALE CITY MOVIEPLEX
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">2498 Kensington Manor Blvd., Wilson, CA 69855</h5>
+                <p class="card-text">Select a movie time to buy Standard Showtimes</p>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+            </div>
+        </div>
+
+        <div class="card mb-5 mt-5">
+            <div class="card-header">
+                AMC SKYVIEW METROPLEX 16
+            </div>
+            <div class="card-body">
+
+                <h5 class="card-title">1901 Junipero Mason Blvd., Bartlet City, CA 94965</h5>
+                <p class="card-text">Select a movie time to buy Standard Showtimes</p>
+                <a href="#" class="btn btn-primary"></span> 11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+                <a href="#" class="btn btn-primary">11:00AM</a>
+            </div>
+        </div>
+
+
+
+        
+    </div>
+
+
+    <div class="container" id="payment-form">
+        
+            <i class="fa fa-cc-visa" style="font-size:36px"></i>
+            <i class="fa fa-cc-paypal" style="font-size:36px"></i>
+            <i class="fa fa-cc-amex" style="font-size:36px"></i>
+            <i class="fa fa-cc-discover" style="font-size:36px"></i>
+
+        <form class="mb-5 mt-3">
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="inputFirstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name">
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="inputLastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Zip Code</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Zip Code">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="inputCity">Card Number</label>
+                    <input type="text" class="form-control" id="inputCity" placeholder="City">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputState">Expiration Date</label>
+                    <input type="text" class="form-control" id="inputExpirationDate" placeholder="Exp Date">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputYear">Year</label>
+                    <input type="text" class="form-control" id="inputYear" placeholder="Year">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputSecurityCode">Security Code</label>
+                    <input type="text" class="form-control" id="inputSecurityCode" placeholder="Security Code">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                    <label class="form-check-label" for="gridCheck">
+                        Email Confirmation
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="payment-submit">Submit</button>
+        </form>
+    </div>
+    <div class="container text-center mb-5" id="seating-form">
+
+        <div class="card text-center">
+            <div class="card-header">
+                Select Seating
+            </div>
+            <div class="card-body">
+                <p class="card-text">Screen</p>
+                <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">1</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">2</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">3</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">4</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">5</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">6</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">7</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">8</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">9</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">10</button><br>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">11</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">12</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">13</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">14</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">15</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">16</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">17</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">18</button><br>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">19</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">20</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">21</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">22</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">23</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">24</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">25</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">26</button><br>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">27</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">28</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">29</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">30</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">31</button>
+               <button type="button" class="btn btn-secondary1 btn btn-secondary btn-sm">32</button><br>
+                <p class="card-text mt-2">Back</p>
+
+
+
+                <button type="button" class="btn btn-primary" id="seating-submit">Submit</button>
+            </div>
+            <div class="card-footer text-muted">
+                Lorem Ipsum Dolor
+            </div>
+        </div>
 
     </div>
-  
-            
-              
-  <script type="text/javascript" src="logicproject1.js"></script>
+
+
+
+
+    
+    <script type="text/javascript" src="logicproject1.js"></script>
+    <script type="text/javascript" src="javascript/script.js"></script>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="javascript/script.js"></script>
+
 </html>
